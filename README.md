@@ -41,7 +41,7 @@ API endpoint documentation is auto-generated in `localhost:8000/docs`. API route
 
 Contains the FastAPI server code and helper functions.
 
-### Jinja2 Templates (`/templates` folder)
+### Jinja2 Frontend Templates (`/templates` folder)
 
 | File | Description |
 | --- | --- | 
