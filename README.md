@@ -1,56 +1,78 @@
-# yolov5-fastapi-web
-This is a FastAPI web application that allows a user to upload images to perform inference using a pre-trained YOLOv5 model, and receive results in JSON format.
+# YOLOv5 FastAPI Web
 
-<img src="https://user-images.githubusercontent.com/47000850/171301696-fe31b6fd-a2c4-4b2c-9029-f11ce1ddfb64.png" alt="image" width="700"/>
+This repository hosts a FastAPI web application allowing users to upload images for inference using a pre-trained YOLOv5 model, receiving results in JSON format.
 
-## Install Requirements
-Python 3.10 or later with all requirements.txt dependencies installed, including torch>=1.7 (per https://github.com/ultralytics/yolov5).
+![YOLOv5 FastAPI Web](https://user-images.githubusercontent.com/47000850/171301696-fe31b6fd-a2c4-4b2c-9029-f11ce1ddfb64.png)
 
-To install run:
+## Installation
+
+Ensure Python 3.10 or later is installed, along with dependencies listed in `requirements.txt`, including `torch>=1.7`. You can install dependencies using:
+
 ```
 pip install -r requirements.txt
 ```
 
-## FastAPI Example (Minimal)
+## Example Usage
 
-See the `client_server_example` folder for a minimal client/server wrapper of YOLOv5 with FastAPI and HTML forms.
+### Minimal FastAPI Example
 
-Again, you can try this out by:
-1. Running the server with `python server_minimal.py` or `uvicorn server_minimal:app --reload`
-1. Test the server with `python client_minimal.py`, navigating to `localhost:8000` in your web browser or `localhost:8000/docs -> POST Request -> Try It Out`
+Navigate to the `client_server_example` folder for a minimal client/server wrapper of YOLOv5 with FastAPI and HTML forms.
 
-## Inference Methods
+1. Run the server with:
+   ```
+   python server_minimal.py
+   ```
+   or 
+   ```
+   uvicorn server_minimal:app --reload
+   ```
 
-You can initialize the server with `python server.py` (use `--help` for other args) or `uvicorn server:app --reload`
+2. Test the server with:
+   ```
+   python client_minimal.py
+   ```
+   or by navigating to `localhost:8000` in your web browser and selecting "Try It Out" in the POST request section.
 
-You can test the server in a couple of ways:
-1. Using `client.py` - this is a basic example of using the Requests library to upload a batch of images + model name to `localhost:8000/detect/` and receive JSON inference results. 
-1. Open `localhost:8000` in your web browser, use the web form to upload image(s) and select a model, then click submit. You should see inference results displayed in the web browser shortly. 
-1. Open `http://localhost:8000/drag_and_drop_detect` in your web browser, use the drag and drop interface to upload an image, and the image + bounding boxes will be rendered via Javascript.
+### Inference Methods
 
-Models will automatically be downloaded the first time they are used and are cached on disc.
+1. Initialize the server with:
+   ```
+   python server.py
+   ```
+   (use `--help` for other arguments) or
+   ```
+   uvicorn server:app --reload
+   ```
 
-<img src="https://user-images.githubusercontent.com/47000850/171300877-e3941e01-1aa0-4816-9cf9-6947481b4ec8.png" alt="city_street_results" width="700"/>
+2. Test the server:
+   - Use `client.py` to upload images and receive JSON inference results.
+   - Open `localhost:8000` in your web browser to use the web form for image upload and model selection.
+   - Open `http://localhost:8000/drag_and_drop_detect` for a drag and drop interface.
+
+Models are automatically downloaded on first use and cached on disk.
+
+![City Street Results](https://user-images.githubusercontent.com/47000850/171300877-e3941e01-1aa0-4816-9cf9-6947481b4ec8.png)
 
 ## API Documentation
-API endpoint documentation is auto-generated in `localhost:8000/docs`. API route to receive JSON inference results.
+
+Auto-generated API documentation is available at `localhost:8000/docs`. The API route provides JSON inference results.
 
 ## Developer Notes
 
-### Server.py
+### `server.py`
 
-Contains the FastAPI server code and helper functions.
+Contains FastAPI server code and helper functions.
 
 ### Jinja2 Frontend Templates (`/templates` folder)
 
 | File | Description |
 | --- | --- | 
-| layout.html | Base template with navbar that is common to all pages. `home.html` and `drag_and_drop_detect.html` both extend this template. |
-| `home.html` | Basic web form for uploading images, model selection, and inference size to the server. The server gets the YOLO results and renders a bbox image, then returns the results by plugging them into the jinja2 template `templates/show_results.html`. This is overly fancy, but I wanted to demonstrate how to do this - if you want just JSON results see the minimal client-server example. |
-| `drag_and_drop_detect.html` | This implements a Drag & Drop interface to upload images. Once dropped onto the dropzone, the image, and parameters are sent to the server's `/detect` endpoint which returns JSON results. The JSON results are then used to render the image + bboxes in the web browser as seen in the Inference Methods section above. The box labels are raised above the box outline such that the labels don't overlap with each other. |
- 
+| `layout.html` | Base template with navbar common to all pages. `home.html` and `drag_and_drop_detect.html` extend this template. |
+| `home.html` | Basic web form for uploading images, model selection, and inference. Server renders bbox image and returns results via `templates/show_results.html`. |
+| `drag_and_drop_detect.html` | Implements a Drag & Drop interface for image upload. Sends image and parameters to server's `/detect` endpoint, rendering image + bboxes in the browser. Box labels are raised above the outline to prevent overlap. |
+
 ## Credits
 
-This repository is a wrapper around YOLOv5 from Ultralytics: https://github.com/ultralytics/yolov5
+This repository is a wrapper around YOLOv5 from Ultralytics: [GitHub - ultralytics/yolov5](https://github.com/ultralytics/yolov5)
 
-Also modified the results_to_json function from the original here: https://gist.github.com/decent-engineer-decent-datascientist/81e04ad86e102eb083416e28150aa2a1
+Results_to_json function is modified from: [GitHub Gist](https://gist.github.com/decent-engineer-decent-datascientist/81e04ad86e102eb083416e28150aa2a1)
